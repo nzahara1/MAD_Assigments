@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         String heigthLength = length2.getText().toString();
                         if (baseLength.equals("") || baseLength.equals(null)){
                             length1.setError("Enter a value");
-                            break;
                         }
                         if (heigthLength.equals("") || heigthLength.equals(null)) {
                             length2.setError("Enter a value");
