@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My Assignment1</string>
+    <string name="triangle">Triangle</string>
+    <string name="square">Square</string>
+    <string name="circle">Circle</string>
+    <string name="select_text">Select a shape</string>
+    <string name="length_1">Length1 :</string>
+    <string name="length_2">Length2:</string>
+    <string name="calculate">Calculate</string>
+    <string name="clear_btn">Clear</string>
+    <string name="length1">Length1</string>
+    <string name="length2">Length2</string>
+</resources>
