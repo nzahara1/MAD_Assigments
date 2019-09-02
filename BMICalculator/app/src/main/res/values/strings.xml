@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BMICalculator</string>
+    <string name="weight_unit">lb</string>
+    <string name="height_str">Height</string>
+    <string name="height_ft" />
+    <string name="height_unit_ft">feet</string>
+    <string name="height_unit_inch">inches</string>
+    <string name="calc_btn">Calculate BMI</string>
+    <string name="bmi_string"></string>
+    <string name="bmi_result_str"></string>
+</resources>
