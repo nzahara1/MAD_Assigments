@@ -74,18 +74,20 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private boolean validateInputs(String weightStr, String heightFeetStr, String heightInchStr, TextView weight, TextView heightFeet, TextView heightInches) {
+        boolean error_flag = false;
         if (weightStr.equals(null) || weightStr.equals("")) {
             weight.setError("Kindly provide the weight");
-            return true;
+            error_flag = true;
         }
         if (heightFeetStr.equals(null) || heightFeetStr.equals("")) {
             heightFeet.setError("Kindly provide the height in feet");
-            return true;
+            error_flag = true;
         }
         if (heightInchStr.equals(null) || heightInchStr.equals("")) {
             heightInches.setError("Kindly provide the height in feet");
-            return true;
+            error_flag = true;
         }
+        if (error_flag){ return true; }
         return false;
     }
 }
