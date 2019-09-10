@@ -24,7 +24,6 @@ public class Main3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
         setTitle("My Profile");
 
         Bundle intentBundle = getIntent().getExtras();
@@ -57,10 +56,10 @@ public class Main3Activity extends AppCompatActivity {
                     selectGender.setText("Select Gender");
                     selectGender.setTextColor(Color.GRAY);
                     switch (radioGroup.getCheckedRadioButtonId()) {
-                        case R.id.female_radio:
+                        case R.id.e_fradio:
                             imageView.setImageDrawable(getDrawable(R.drawable.female));
                             break;
-                        case R.id.male_radio:
+                        case R.id.e_m_radio:
                             imageView.setImageDrawable(getDrawable(R.drawable.male));
                             break;
                         default:
