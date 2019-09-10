@@ -3,13 +3,7 @@ package com.example.assignment3;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +19,6 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
         setTitle("My Profile");
-
         Bundle intentBundle = getIntent().getExtras();
         final EditText lName = findViewById(R.id.e_last_name);
         final EditText fName = findViewById(R.id.edit_f_name);
@@ -52,9 +45,6 @@ public class Main3Activity extends AppCompatActivity {
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    selectGender.setError(null);
-                    selectGender.setText("Select Gender");
-                    selectGender.setTextColor(Color.GRAY);
                     switch (radioGroup.getCheckedRadioButtonId()) {
                         case R.id.e_fradio:
                             imageView.setImageDrawable(getDrawable(R.drawable.female));
