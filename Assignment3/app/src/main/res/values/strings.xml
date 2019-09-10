@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Assignment3</string>
+    <string name="fname"></string>
+    <string name="lname"></string>
+    <string name="sgender">Select Gender</string>
+    <string name="gender_image" />
+    <string name="fradio">Female</string>
+    <string name="mradio">Male</string>
+    <string name="sbtn">Save</string>
+    <string name="f_hint">First Name</string>
+    <string name="l_hint">Last Name</string>
+    <string name="name">Name :</string>
+    <string name="ugender" />
+    <string name="ebtn">Edit</string>
+    <string name="nval" />
+    <string name="uimage" />
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="efname">First Name</string>
+    <string name="e_fname" />
+    <string name="e_lname"></string>
+    <string name="elname">Last Name</string>
+    <string name="e_u_image" />
+    <string name="efradio">Female</string>
+    <string name="emradio">Male</string>
+    <string name="esavebtn">Save</string>
+    <string name="esgender">Select Gender</string>
+</resources>
