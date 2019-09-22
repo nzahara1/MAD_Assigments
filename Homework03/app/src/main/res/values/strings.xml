@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">InClass4</string>
+    <string name="label_1">Select Complexity:</string>
+    <string name="complex_val">0 times</string>
+    <string name="minlabel">Minimum:</string>
+    <string name="mval" />
+    <string name="maxlabel">Maximim:</string>
+    <string name="alabel">Average:</string>
+    <string name="maxval" />
+    <string name="avgval" />
+    <string name="generate_val">Generate Number Async Task</string>
+</resources>
