@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayListRating">
+
+    <TextView
+        android:id="@+id/name_label"
+        android:layout_width="86dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="84dp"
+        android:text="@string/nlabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/name_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:text="@string/nval"
+        app:layout_constraintStart_toEndOf="@+id/name_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/desc_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/dlabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_label" />
+
+    <EditText
+        android:id="@+id/desc_val"
+        android:layout_width="318dp"
+        android:layout_height="79dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_label" />
+
+    <TextView
+        android:id="@+id/genre_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/glabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_val" />
+
+    <TextView
+        android:id="@+id/year_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/ylabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating_label" />
+
+    <TextView
+        android:id="@+id/rating_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/rlabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genre_label" />
+
+    <TextView
+        android:id="@+id/imdb_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/ilabel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/year_label" />
+
+    <EditText
+        android:id="@+id/imdb_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="IMDB"
+        android:inputType="textPersonName"
+        android:text="@string/imdbval"
+        app:layout_constraintStart_toEndOf="@+id/imdb_label"
+        app:layout_constraintTop_toBottomOf="@+id/year_val" />
+
+    <EditText
+        android:id="@+id/year_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Year"
+        android:inputType="number"
+        android:text="@string/yearval"
+        app:layout_constraintStart_toEndOf="@+id/year_label"
+        app:layout_constraintTop_toBottomOf="@+id/rating_value" />
+
+    <Button
+        android:id="@+id/finish_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/fbtn"
+        app:layout_constraintStart_toEndOf="@+id/prev_movie"
+        app:layout_constraintTop_toBottomOf="@+id/imdb_val" />
+
+    <ImageButton
+        android:id="@+id/first_movie"
+        android:layout_width="52dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imdb_label"
+        app:srcCompat="@drawable/first" />
+
+    <ImageButton
+        android:id="@+id/prev_movie"
+        android:layout_width="52dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/first_movie"
+        app:layout_constraintTop_toBottomOf="@+id/imdb_label"
+        app:srcCompat="@drawable/previous" />
+
+    <ImageButton
+        android:id="@+id/next_movie"
+        android:layout_width="52dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/finish_btn"
+        app:layout_constraintTop_toBottomOf="@+id/imdb_val"
+        app:srcCompat="@drawable/next" />
+
+    <ImageButton
+        android:id="@+id/last_movie"
+        android:layout_width="52dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/next_movie"
+        app:layout_constraintTop_toBottomOf="@+id/imdb_val"
+        app:srcCompat="@drawable/last" />
+
+    <TextView
+        android:id="@+id/genre_val"
+        android:layout_width="185dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="37dp"
+        android:focusable="false"
+        android:text="@string/genreval"
+        app:layout_constraintStart_toEndOf="@+id/genre_label"
+        app:layout_constraintTop_toBottomOf="@+id/desc_val" />
+
+    <TextView
+        android:id="@+id/rating_value"
+        android:layout_width="190dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="22dp"
+        android:text="@string/ratingval"
+        app:layout_constraintStart_toEndOf="@+id/rating_label"
+        app:layout_constraintTop_toBottomOf="@+id/genre_val" />
+
+    <TextView
+        android:id="@+id/movie_rating_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/mrl"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

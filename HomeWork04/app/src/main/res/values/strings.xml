@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">HomeWork04</string>
+    <string name="addbtn">Add Movie</string>
+    <string name="editbtn">Edit</string>
+    <string name="dbtn">Delete Movie</string>
+    <string name="ybtn">Show List by Year</string>
+    <string name="rbtn">Show List by Rating</string>
+    <string name="nlabel">Name:</string>
+    <string name="nval" />
+    <string name="dlabel">Description:</string>
+    <string name="glabel">Genre:</string>
+    <string name="ylabel">Year:</string>
+    <string name="rlabel">Rating:</string>
+    <string name="yearval" />
+    <string name="ilabel">IMDB:</string>
+    <string name="imdbval" />
+    <string name="addmovbtn">Add Movie</string>
+    <string name="seekval">0</string>
+    <string name="smyl">Movies by Year</string>
+    <string name="fbtn">Finish</string>
+    <string name="genreval" />
+    <string name="ratingval" />
+    <string name="mrl">Movies by Rating</string>
+    <string name="savebtn">Save Changes</string>
+    <string-array name="genre_arrays">
+        <item>Action</item>
+        <item>Animation</item>
+        <item>Comedy</item>
+        <item>Documentary</item>
+        <item>Family</item>
+        <item>Horror</item>
+        <item>Crime</item>
+        <item>Others</item>
+    </string-array>
+</resources>
