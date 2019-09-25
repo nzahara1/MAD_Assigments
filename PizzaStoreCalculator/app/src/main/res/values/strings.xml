@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Pizza Store Calculator</string>
+    <string name="title_activity_order">OrderActivity</string>
+    <string name="delivery">Delivery</string>
+    <string name="tbtn">Add Topping</string>
+    <string name="cbtn">Clear Pizza</string>
+    <string name="clbtn">Checkout</string>
+    <string name="pizza" />
+    <string name="im1" />
+    <string name="im2" />
+    <string name="im3" />
+    <string name="im4" />
+    <string name="im5" />
+    <string name="im6" />
+    <string name="im7" />
+    <string name="im8" />
+    <string name="im9" />
+    <string name="im10" />
+    <string name="olabel">Your Order</string>
+    <string name="bprice">Base Price:</string>
+    <string name="bval">6.5$</string>
+    <string name="tlabel">Toppings:</string>
+    <string name="tval" />
+    <string name="tlist" />
+    <string name="dlabel">Delivery Cost:</string>
+    <string name="dval" />
+    <string name="tolabel"><u>Total:</u></string>
+    <string name="toval" />
+    <string name="fbtn">Finish</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
