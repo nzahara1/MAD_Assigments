@@ -3,7 +3,11 @@ package com.example.homework04;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -37,8 +41,15 @@ public class AddMovieActivity extends AppCompatActivity {
         seekBar.setMax(5);
         seekBar.setProgress(0);
 
-        List<String> list = new ArrayList<String>();
-        list.add("Select");
+        SpannableStringBuilder selectText = new SpannableStringBuilder("Select");
+        selectText.setSpan(
+                new ForegroundColorSpan(Color.GRAY),
+                0, // start
+                selectText.length(), // end
+                Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        );
+        List list = new ArrayList<>();
+        list.add(selectText);
         list.add("Action");
         list.add("Animation");
         list.add("Comedy");
@@ -48,7 +59,7 @@ public class AddMovieActivity extends AppCompatActivity {
         list.add("Crime");
         list.add("Others");
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, list);
         spinner.setAdapter(arrayAdapter);
         if (intent != null) {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -105,7 +116,7 @@ public class AddMovieActivity extends AppCompatActivity {
             Toast.makeText(AddMovieActivity.this, "Description cannot be greater than 1000 characters", Toast.LENGTH_LONG).show();
             return true;
         }
-        if (spinner.getSelectedItem() == "Select") {
+        if (spinner.getSelectedItem().toString().equals("Select")) {
             Toast.makeText(AddMovieActivity.this, "Genre cannot be empty", Toast.LENGTH_LONG).show();
             return true;
         }

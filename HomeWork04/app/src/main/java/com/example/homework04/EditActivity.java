@@ -3,7 +3,11 @@ package com.example.homework04;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,8 +49,16 @@ public class EditActivity extends AppCompatActivity {
         seekBar.setMax(5);
         seekBar.setProgress(0);
 
-        List<String> list = new ArrayList<String>();
-        list.add("Select");
+
+        SpannableStringBuilder selectText = new SpannableStringBuilder("Select");
+        selectText.setSpan(
+                new ForegroundColorSpan(Color.GRAY),
+                0, // start
+                selectText.length(), // end
+                Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        );
+        List list = new ArrayList<>();
+        list.add(selectText);
         list.add("Action");
         list.add("Animation");
         list.add("Comedy");
@@ -120,7 +132,7 @@ public class EditActivity extends AppCompatActivity {
             Toast.makeText(EditActivity.this, "Description cannot be greater than 1000 characters", Toast.LENGTH_LONG).show();
             return true;
         }
-        if (spinner.getSelectedItem() == "Select") {
+        if (spinner.getSelectedItem().toString().equals("Select")) {
             Toast.makeText(EditActivity.this, "Genre cannot be empty", Toast.LENGTH_LONG).show();
             return true;
         }
