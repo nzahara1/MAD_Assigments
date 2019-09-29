@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (movie.size() <= 0) {
+                    Toast.makeText(MainActivity.this, "Movie list is empty", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 String[] movieNames = movie.stream().map((movie) -> movie.getName()).collect(Collectors.toList()).toArray(new String[movie.size()]);
                 builder.setTitle("Pick a Movie").setItems(movie.stream().map((movie) -> movie.getName()).collect(Collectors.toList()).toArray(new String[movie.size()]), new DialogInterface.OnClickListener() {
