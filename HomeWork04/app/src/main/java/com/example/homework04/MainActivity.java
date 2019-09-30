@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
+    /*
+     HomeWork04
+     Noor Zahara - 801097945
+     Sowmya Sundar - 801101012
+    */
 
     List<Movie> movie = new ArrayList<Movie>();
     static String MOVIE_OBJ = "movie_obj";
