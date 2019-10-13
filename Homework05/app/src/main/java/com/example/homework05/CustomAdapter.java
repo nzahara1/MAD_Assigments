@@ -42,7 +42,9 @@ public class CustomAdapter extends ArrayAdapter<News> {
         TextView publishedAt = rowView.findViewById(R.id.published_at);
         title.setText(news.get(position).getTitle());
         publishedAt.setText(news.get(position).getPublishedAt());
-        author.setText(news.get(position).getAuthor());
+        if(news.get(position).getAuthor() != "null" && !news.get(position).getAuthor().isEmpty()) {
+            author.setText(news.get(position).getAuthor());
+        }
         return rowView;
     }
 }

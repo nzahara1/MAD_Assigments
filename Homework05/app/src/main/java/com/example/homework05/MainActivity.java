@@ -38,17 +38,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!isConnected()) {
-            Toast.makeText(this, "Internet not connected", Toast.LENGTH_LONG).show();
-            return;
-        }
         progressBar = findViewById(R.id.progressBar);
         listView = findViewById(R.id.list_view);
-        new ParseSourceTask().execute("https://newsapi.org/v2/sources?apiKey=6b43fa14eb7947a5b47d5d149721196c");
+        if (!isConnected()) {
+            Toast.makeText(this, "Internet not connected", Toast.LENGTH_LONG).show();
+        }else{
+            new ParseSourceTask().execute("https://newsapi.org/v2/sources?apiKey=6b43fa14eb7947a5b47d5d149721196c");
+        }
+
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(MainActivity.this, NewsActivity.class);
             intent.putExtra(SOURCE, sources.get(i));
-            startActivity(intent);
+            if (!isConnected()) {
+                Toast.makeText(this, "Internet not connected", Toast.LENGTH_LONG).show();
+            }else{
+                startActivity(intent);
+            }
+
         });
 
     }
