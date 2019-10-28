@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">HomeWork06</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="firstname" />
+    <string name="lastname" />
+    <string name="studentid" />
+    <string name="departmentlabel">Department</string>
+    <string name="csbtn">CS</string>
+    <string name="sisbtn">SIS</string>
+    <string name="biobtn">BIO</string>
+    <string name="otherbtn">OTHER</string>
+    <string name="savebtn">Save</string>
+    <string name="nameupdate">Name:</string>
+    <string name="studentidupdate">Student ID:</string>
+    <string name="departmentupdate">Department:</string>
+    <string name="nameval" />
+    <string name="studentidval" />
+    <string name="departmentval" />
+    <string name="editbtn">EDIT</string>
+</resources>
