@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayMyProfile">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/update_image"
+            android:layout_width="178dp"
+            android:layout_height="136dp"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="66dp"
+            android:src="@android:drawable/toast_frame"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="78dp"
+            android:layout_marginTop="56dp"
+            android:text="@string/nameupdate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/update_image" />
+
+        <TextView
+            android:id="@+id/name_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="56dp"
+            android:text="@string/nameval"
+            app:layout_constraintStart_toEndOf="@+id/name_update"
+            app:layout_constraintTop_toBottomOf="@+id/update_image" />
+
+        <TextView
+            android:id="@+id/student_id_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="78dp"
+            android:layout_marginTop="27dp"
+            android:text="@string/studentidupdate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_update" />
+
+        <TextView
+            android:id="@+id/studentid_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="29dp"
+            android:text="@string/studentidval"
+            app:layout_constraintStart_toEndOf="@+id/student_id_update"
+            app:layout_constraintTop_toBottomOf="@+id/name_val" />
+
+        <TextView
+            android:id="@+id/department_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/departmentupdate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/student_id_update" />
+
+        <TextView
+            android:id="@+id/department_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/departmentval"
+            app:layout_constraintStart_toEndOf="@+id/department_update"
+            app:layout_constraintTop_toBottomOf="@+id/studentid_val" />
+
+        <Button
+            android:id="@+id/edit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="161dp"
+            android:layout_marginTop="228dp"
+            android:text="@string/editbtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/update_image" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
