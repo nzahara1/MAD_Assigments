@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">InClass09</string>
+    <string name="emailid" />
+    <string name="passwordid" />
+    <string name="loginbtn">Login</string>
+    <string name="signupbtn">Sign Up</string>
+    <string name="firstname"></string>
+    <string name="lastname" />
+    <string name="emailsignup" />
+    <string name="passwordsignup" />
+    <string name="repeatpassword" />
+    <string name="cancelbtn">Cancel</string>
+    <string name="inboxusername" />
+    <string name="emailsummary" />
+    <string name="emaildate" />
+    <string name="sendlabel">Send to:</string>
+    <string name="subjectval" />
+    <string name="messagelabel">Message</string>
+    <string name="sendbtn">Send</string>
+    <string name="sendername">Sender Name:</string>
+    <string name="sendernameval" />
+    <string name="subjectlabel">Subject:</string>
+<!--    <string name="subjectval" />-->
+    <string name="messageval" />
+    <string name="createlabel">Created At:</string>
+    <string name="createdval" />
+    <string name="closebtn">Close</string>
+</resources>
