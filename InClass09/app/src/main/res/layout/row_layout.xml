@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/email_summary"
+        android:layout_width="205dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="53dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/emailsummary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/email_date"
+        android:layout_width="204dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/emaildate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_summary" />
+
+    <ImageButton
+        android:id="@+id/delete_btn"
+        android:layout_width="97dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="83dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/email_date"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/delete" />
+</androidx.constraintlayout.widget.ConstraintLayout>
