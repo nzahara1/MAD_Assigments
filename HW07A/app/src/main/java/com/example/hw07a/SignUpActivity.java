@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +28,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,8 +44,12 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseAuth auth;
     EditText firstName;
     EditText lastName;
+    ImageView avatarimage;
     String imageUrl;
     String gender;
+    static Map<String, StorageReference> map = new HashMap<>();
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
+        avatarimage = findViewById(R.id.avatar);
         final RadioGroup radioGroup = findViewById(R.id.radio_grp);
         Intent intent = getIntent();
 
@@ -56,6 +74,12 @@ public class SignUpActivity extends AppCompatActivity {
                     gender = radioButton.getText().toString();
                 }
             });
+            avatarimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
             findViewById(R.id.create_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -63,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
                         return;
                     }
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender);
+                    User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender, imageUrl);
                     db.collection("users").document(user.getUserName()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -147,4 +171,79 @@ public class SignUpActivity extends AppCompatActivity {
         }
         return valid;
     }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private void uploadImage(Bitmap photoBitmap){
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+
+
+        final StorageReference imageRepo = storageReference.child("images/camera_" + counter + ".jpg");
+
+//        Converting the Bitmap into a bytearrayOutputstream....
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imageRepo.putBytes(data);
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.e(TAG, "onFailure: "+e.getMessage());
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                Log.d(TAG, "onSuccess: "+"Image Uploaded!!!");
+//            }
+//        });
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+//                return null;
+                if (!task.isSuccessful()){
+                    throw task.getException();
+                }
+
+                return imageRepo.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()){
+                    Log.d("demo", "Image Download URL"+ task.getResult());
+                    String imageURL = task.getResult().toString();
+                    imageUrl = imageURL;
+                    map.put(imageURL, imageRepo);
+                    //Picasso.get().load(imageURL).into(avatarimage);
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        Camera Callback........
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            avatarimage.setImageBitmap(imageBitmap);
+
+            //bitmapUpload = imageBitmap;
+            uploadImage(imageBitmap);
+        }
+    }
+
+
 }
