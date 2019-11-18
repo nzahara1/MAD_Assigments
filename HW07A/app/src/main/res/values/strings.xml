@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">HW07A</string>
     <string name="input_placeholder">Write a message</string>
+    <string name="username"></string>
+    <string name="passwordid" />
+    <string name="loginbtn">Login</string>
+    <string name="signupbtn">Sign Up</string>
+    <string name="malebtn">Male</string>
+    <string name="femalebtn">Female</string>
+    <string name="createbtn">Create</string>
+    <string name="firstname" />
+    <string name="lastname" />
 </resources>
