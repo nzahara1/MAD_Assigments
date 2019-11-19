@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender);
-                    db.collection("users").document(user.getUserName()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    db.collection("users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -120,6 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         String password = this.password.getText().toString();
+        // 6 character validation
         if (TextUtils.isEmpty(password)) {
             this.password.setError("Required.");
             valid = false;

@@ -3,6 +3,7 @@ package com.example.hw07a;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         while (sb.length() < 7) {
             sb.append(Integer.toHexString(r.nextInt()));
         }
+        Log.d("color",sb.toString().substring(0, 7));
         return sb.toString().substring(0, 7);
     }
 

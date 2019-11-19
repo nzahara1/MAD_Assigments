@@ -158,7 +158,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateUI(FirebaseUser user) {
-//        if (user != null) {
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, TripActivity.class);
+            startActivity(intent);
+            finish();
 //            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
 //                    user.getEmail(), user.isEmailVerified()));
 //            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
@@ -168,7 +171,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
 //
 //            findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
-//        } else {
+        }
+//        else {
 //            mStatusTextView.setText(R.string.signed_out);
 //            mDetailTextView.setText(null);
 //

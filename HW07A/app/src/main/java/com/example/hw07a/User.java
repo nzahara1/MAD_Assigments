@@ -14,6 +14,8 @@ public class User implements Serializable {
 
     private String gender;
 
+    private String chatRooms;
+
     public User(String firstName, String lastName, String userName, String password, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,6 +44,10 @@ public class User implements Serializable {
         return gender;
     }
 
+    public String getChatRooms() {
+        return chatRooms;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -50,6 +56,7 @@ public class User implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", gender='" + gender + '\'' +
+                ", chatRooms='" + chatRooms + '\'' +
                 '}';
     }
 }

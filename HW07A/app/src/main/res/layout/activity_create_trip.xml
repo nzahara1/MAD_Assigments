@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateTripActivity">
+
+    <ImageView
+        android:id="@+id/trip_photo"
+        android:layout_width="186dp"
+        android:layout_height="148dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/toast_frame" />
+
+    <EditText
+        android:id="@+id/trip_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="58dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:text="@string/tripname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trip_photo" />
+
+    <EditText
+        android:id="@+id/chat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="103dp"
+        android:layout_marginTop="47dp"
+        android:ems="10"
+        android:hint="Chat Name"
+        android:inputType="textPersonName"
+        android:text="@string/chatname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lat_id" />
+
+    <Button
+        android:id="@+id/trip_create_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/tripcreatebtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_name" />
+
+    <EditText
+        android:id="@+id/lat_id"
+        android:layout_width="93dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="37dp"
+        android:ems="10"
+        android:hint="Lat"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trip_name" />
+
+    <EditText
+        android:id="@+id/lon_id"
+        android:layout_width="93dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="37dp"
+        android:ems="10"
+        android:hint="Lon"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toEndOf="@+id/lat_id"
+        app:layout_constraintTop_toBottomOf="@+id/trip_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
