@@ -27,6 +27,15 @@ public class TripActivity extends AppCompatActivity {
                     finish();
                 }
             });
+
+            findViewById(R.id.signout_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FirebaseAuth auth = LoginActivity.mAuth;
+                    auth.signOut();
+                    finish();
+                }
+            });
         }
     }
 }
