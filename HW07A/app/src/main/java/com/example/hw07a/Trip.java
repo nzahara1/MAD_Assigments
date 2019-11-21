@@ -14,12 +14,15 @@ public class Trip implements Serializable {
 
     public String chatName;
 
-    public Trip(String imageUrl, String name, String lat, String lon, String chatName) {
+    public String userId;
+
+    public Trip(String imageUrl, String name, String lat, String lon, String chatName, String userId) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.lat = lat;
         this.lon = lon;
         this.chatName = chatName;
+        this.userId = userId;
     }
 
     public String getImageUrl() {
@@ -42,6 +45,10 @@ public class Trip implements Serializable {
         return chatName;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -50,6 +57,7 @@ public class Trip implements Serializable {
                 ", lat='" + lat + '\'' +
                 ", lon='" + lon + '\'' +
                 ", chatName='" + chatName + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }

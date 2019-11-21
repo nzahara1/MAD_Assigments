@@ -41,7 +41,7 @@ public class CreateTripActivity extends AppCompatActivity {
                     final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     final FirebaseFirestore db = FirebaseFirestore.getInstance();
                     final Trip trip = new Trip("default", name.getText().toString(), lat.getText().toString(),
-                            lon.getText().toString(), chatName.getText().toString());
+                            lon.getText().toString(), chatName.getText().toString(), user.getUid());
                     db.collection("trips").document(user.getUid()).set(trip).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

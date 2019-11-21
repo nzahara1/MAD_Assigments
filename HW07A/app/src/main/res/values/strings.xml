@@ -19,4 +19,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titleid">Title:</string>
+    <string name="locationid">Location:</string>
+    <string name="titleval" />
+    <string name="locationval" />
+    <string name="joinbtn">Join</string>
+    <string name="chatnamer">Chat Name:</string>
+    <string name="chatval" />
 </resources>
