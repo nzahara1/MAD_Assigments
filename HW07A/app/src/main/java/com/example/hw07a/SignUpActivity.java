@@ -130,8 +130,10 @@ public class SignUpActivity extends AppCompatActivity {
         password.setText(user.getPassword());
         if (user.getGender().equals("Female")) {
             radioGroup.check(R.id.female_btn);
+            gender = "Female";
         } else {
             radioGroup.check(R.id.male_btn);
+            gender = "Male";
         }
         createBtn.setText("Update");
     }
@@ -179,6 +181,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
                             });
                             Toast.makeText(SignUpActivity.this, "User is successfully created!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }

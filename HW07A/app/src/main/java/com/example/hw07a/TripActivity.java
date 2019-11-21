@@ -33,18 +33,23 @@ import java.util.ArrayList;
 public class TripActivity extends AppCompatActivity {
 
     User user;
+    static final int PROFILE_UPDATE = 200;
+    ImageView imageView;
+    TextView userName;
+    TabLayout tabLayout;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
         final Intent intent = getIntent();
-        final ImageView imageView = findViewById(R.id.profile_id);
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
 
+        imageView = findViewById(R.id.profile_id);
         if (intent != null) {
-            TextView userName = findViewById(R.id.user_id);
+            userName = findViewById(R.id.user_id);
             FirebaseAuth auth = LoginActivity.mAuth;
             FirebaseUser currentUser = auth.getCurrentUser();
             userName.setText("Welcome " + currentUser.getEmail() + "!");
@@ -89,17 +94,47 @@ public class TripActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent1 = new Intent(TripActivity.this, SignUpActivity.class);
                     intent1.putExtra("users", user);
-                    startActivity(intent1);
+                    startActivityForResult(intent1, PROFILE_UPDATE);
                 }
             });
+            ViewPageradapter viewPageradapter = new ViewPageradapter(getSupportFragmentManager());
+            viewPageradapter.addFragment(new ChatsFragment(), "Chats");
+            viewPageradapter.addFragment(new TripFragment(), "Trips");
+
+            viewPager.setAdapter(viewPageradapter);
+            tabLayout.setupWithViewPager(viewPager);
         }
+    }
 
-        ViewPageradapter viewPageradapter = new ViewPageradapter(getSupportFragmentManager());
-        viewPageradapter.addFragment(new ChatsFragment(), "Chats");
-        viewPageradapter.addFragment(new TripFragment(), "Trips");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PROFILE_UPDATE) {
+            userName = findViewById(R.id.user_id);
+            FirebaseAuth auth = LoginActivity.mAuth;
+            FirebaseUser currentUser = auth.getCurrentUser();
+            userName.setText("Welcome " + currentUser.getEmail() + "!");
+            //upload user pic
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(LoginActivity.mAuth.getUid());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user = documentSnapshot.toObject(User.class);
+                    if (!user.getAvatar_url().isEmpty()) {
+                        imageView = findViewById(R.id.profile_id);
+                        Picasso.get().load(user.avatar_url).into(imageView);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(TripActivity.this, "Unable to fetch user details", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            });
 
-        viewPager.setAdapter(viewPageradapter);
-        tabLayout.setupWithViewPager(viewPager);
+        }
     }
 
     class ViewPageradapter extends FragmentPagerAdapter {
