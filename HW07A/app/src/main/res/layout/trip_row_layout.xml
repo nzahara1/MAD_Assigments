@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/trip_cover"
+        android:layout_width="128dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/toast_frame" />
+
+    <TextView
+        android:id="@+id/title_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/titleid"
+        app:layout_constraintStart_toEndOf="@+id/trip_cover"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/location_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/locationid"
+        app:layout_constraintStart_toEndOf="@+id/trip_cover"
+        app:layout_constraintTop_toBottomOf="@+id/title_id" />
+
+    <TextView
+        android:id="@+id/title_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="35dp"
+        android:text="@string/titleval"
+        app:layout_constraintStart_toEndOf="@+id/title_id"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/location_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/locationval"
+        app:layout_constraintStart_toEndOf="@+id/location_id"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/join_btn"
+        android:layout_width="73dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/joinbtn"
+        app:layout_constraintStart_toEndOf="@+id/trip_cover"
+        app:layout_constraintTop_toBottomOf="@+id/chat_val" />
+
+    <TextView
+        android:id="@+id/chat_name"
+        android:layout_width="61dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/chatnamer"
+        app:layout_constraintStart_toEndOf="@+id/trip_cover"
+        app:layout_constraintTop_toBottomOf="@+id/location_id" />
+
+    <TextView
+        android:id="@+id/chat_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="68dp"
+        android:text="@string/chatval"
+        app:layout_constraintStart_toEndOf="@+id/chat_name"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
