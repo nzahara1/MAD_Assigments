@@ -15,4 +15,5 @@
     <string name="tripname"></string>
     <string name="chatname" />
     <string name="tripcreatebtn">Trip Create</string>
+    <string name="userid" />
 </resources>

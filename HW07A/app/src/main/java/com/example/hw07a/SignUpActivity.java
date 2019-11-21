@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -20,13 +21,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -45,11 +43,13 @@ public class SignUpActivity extends AppCompatActivity {
     EditText firstName;
     EditText lastName;
     ImageView avatarimage;
-    String imageUrl;
+    String imageUrl = "";
     String gender;
     static Map<String, StorageReference> map = new HashMap<>();
     static final int REQUEST_IMAGE_CAPTURE = 1;
     int counter = 0;
+    RadioGroup radioGroup;
+    Button createBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,20 @@ public class SignUpActivity extends AppCompatActivity {
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
         avatarimage = findViewById(R.id.avatar);
-        final RadioGroup radioGroup = findViewById(R.id.radio_grp);
+        radioGroup = findViewById(R.id.radio_grp);
+        createBtn = findViewById(R.id.create_btn);
         Intent intent = getIntent();
 
         if (intent != null) {
             auth = LoginActivity.mAuth;
+            User user = (User) intent.getSerializableExtra("users");
+            if (user != null) {
+                updateUser(user);
+            }
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                     RadioButton radioButton = findViewById(checkedId);
-                    Log.d("radio test", radioButton.getText().toString());
                     gender = radioButton.getText().toString();
                 }
             });
@@ -80,25 +84,16 @@ public class SignUpActivity extends AppCompatActivity {
                     dispatchTakePictureIntent();
                 }
             });
-            findViewById(R.id.create_btn).setOnClickListener(new View.OnClickListener() {
+            createBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!validateForm()) {
                         return;
                     }
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender, imageUrl);
-                    db.collection("users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("test", "success");
-                            } else {
-
-                            }
-                        }
-                    });
+                    if (auth.getCurrentUser() != null) {
+                        Log.d("image", imageUrl);
+                        updateDatabase();
+                    }
                     createAccount(userName.getText().toString(), password.getText().toString());
                 }
             });
@@ -106,31 +101,95 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private void createAccount(String email, String password) {
-        //   Log.d(TAG, "createAccount:" + email);
-        // [START create_user_with_email]
-        auth.createUserWithEmailAndPassword(email, password)
+    private void updateDatabase() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender, imageUrl);
+        db.collection("users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("test", "success");
+                } else {
+
+                }
+            }
+        });
+        Toast.makeText(SignUpActivity.this, "User profile is successfully updated!", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+
+    private void updateUser(User user) {
+        userName.setText(user.getUserName());
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        if (!user.getAvatar_url().isEmpty()) {
+            Picasso.get().load(user.getAvatar_url()).into(avatarimage);
+        }
+        imageUrl = user.getAvatar_url();
+        password.setText(user.getPassword());
+        if (user.getGender().equals("Female")) {
+            radioGroup.check(R.id.female_btn);
+        } else {
+            radioGroup.check(R.id.male_btn);
+        }
+        createBtn.setText("Update");
+    }
+
+    private void createAccount(final String email, final String userPassword) {
+        if (auth.getCurrentUser() == null) {
+            auth.createUserWithEmailAndPassword(email, userPassword)
+                    .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                signIn(email, userPassword);
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SignUpActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+            });
+        }
+    }
+
+    private void signIn(String email, String userPassword) {
+        auth.signInWithEmailAndPassword(email, userPassword)
                 .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "createUserWithEmail:success");
-                            //FirebaseUser user = auth.getCurrentUser();
-                            Log.d("test", "sss");
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            User user = new User(firstName.getText().toString(), lastName.getText().toString(), userName.getText().toString(), password.getText().toString(), gender, imageUrl);
+                            db.collection("users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("test", "success");
+                                    } else {
+
+                                    }
+                                }
+                            });
                             Toast.makeText(SignUpActivity.this, "User is successfully created!", Toast.LENGTH_LONG).show();
                             finish();
-                            // updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //  Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //   updateUI(null);
                         }
                     }
-                });
-        // [END create_user_with_email]
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
     }
 
     private boolean validateForm() {
@@ -167,7 +226,6 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             this.lastName.setError(null);
         }
-        Log.d("gender", gender);
         if (TextUtils.isEmpty(gender)) {
             valid = false;
         }
@@ -188,28 +246,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         final StorageReference imageRepo = storageReference.child("images/camera_" + counter + ".jpg");
 
-//        Converting the Bitmap into a bytearrayOutputstream....
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = imageRepo.putBytes(data);
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.e(TAG, "onFailure: "+e.getMessage());
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Log.d(TAG, "onSuccess: "+"Image Uploaded!!!");
-//            }
-//        });
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                return null;
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
@@ -236,13 +281,10 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        Camera Callback........
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             avatarimage.setImageBitmap(imageBitmap);
-
-            //bitmapUpload = imageBitmap;
             uploadImage(imageBitmap);
         }
     }

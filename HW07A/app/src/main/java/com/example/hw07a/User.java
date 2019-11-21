@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String firstName;
+    public String firstName;
 
-    private String lastName;
+    public String lastName;
 
-    private String userName;
+    public String userName;
 
-    private String password;
+    public String password;
 
-    private String gender;
-    private String avatar_url;
+    public String gender;
+    public String avatar_url;
 
     private String chatRooms;
 
@@ -25,6 +25,8 @@ public class User implements Serializable {
         this.gender = gender;
         this.avatar_url = avatar_url;
     }
+
+    public User() {}
 
     public String getFirstName() {
         return firstName;
