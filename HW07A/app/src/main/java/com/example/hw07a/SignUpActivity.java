@@ -47,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
     String gender;
     static Map<String, StorageReference> map = new HashMap<>();
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    int counter = 0;
+    static int counter = 0;
     RadioGroup radioGroup;
     Button createBtn;
 
