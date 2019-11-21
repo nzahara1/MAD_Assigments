@@ -1,7 +1,13 @@
 package com.example.hw07a;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,6 +27,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class TripActivity extends AppCompatActivity {
 
@@ -31,6 +40,9 @@ public class TripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trip);
         final Intent intent = getIntent();
         final ImageView imageView = findViewById(R.id.profile_id);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+
         if (intent != null) {
             TextView userName = findViewById(R.id.user_id);
             FirebaseAuth auth = LoginActivity.mAuth;
@@ -80,6 +92,48 @@ public class TripActivity extends AppCompatActivity {
                     startActivity(intent1);
                 }
             });
+        }
+
+        ViewPageradapter viewPageradapter = new ViewPageradapter(getSupportFragmentManager());
+        viewPageradapter.addFragment(new ChatsFragment(), "Chats");
+        viewPageradapter.addFragment(new TripFragment(), "Trips");
+
+        viewPager.setAdapter(viewPageradapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    class ViewPageradapter extends FragmentPagerAdapter {
+
+        private ArrayList<Fragment> fragments;
+
+        private ArrayList<String> titles;
+
+        ViewPageradapter(FragmentManager fm) {
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        private void addFragment(Fragment fragment, String title) {
+            fragments.add(fragment);
+            titles.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
         }
     }
 }
