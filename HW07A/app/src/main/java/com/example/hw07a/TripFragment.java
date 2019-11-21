@@ -20,11 +20,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+//import com.google.firebase.database.DataSnapshot;
+//import com.google.firebase.database.DatabaseError;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -69,7 +69,10 @@ public class TripFragment extends Fragment {
         FirebaseFirestore reference = FirebaseFirestore.getInstance();
         reference.collection("trips").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            public void onEvent( QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    return;
+                }
                 trips.clear();
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Trip trip = new Trip(documentSnapshot.get("imageUrl").toString(), documentSnapshot.get("name").toString(), documentSnapshot.get("lat").toString(), documentSnapshot.get("lon").toString(),
