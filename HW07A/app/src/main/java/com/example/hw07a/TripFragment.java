@@ -69,20 +69,9 @@ public class TripFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        recyclerView = getView().findViewById(R.id.recycle_view);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        trips = new ArrayList<>();
-//        //get trips
-//        getTrips();
-//    }
-
     private void getTrips() {
 
-        FirebaseFirestore db =FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -90,14 +79,14 @@ public class TripFragment extends Fragment {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Log.d("demo", documentSnapshot.getId() + " => " + documentSnapshot.getData());
                         Trip trip = new Trip(documentSnapshot.get("imageUrl").toString(), documentSnapshot.get("name").toString(), documentSnapshot.get("lat").toString(), documentSnapshot.get("lon").toString(),
-                        documentSnapshot.get("chatName").toString(), documentSnapshot.get("userId").toString());
-                              trips.add(trip);
+                                documentSnapshot.get("chatName").toString(), documentSnapshot.get("userId").toString());
+                        trips.add(trip);
 
                     }
-                tripAdapter = new TripAdapter(getContext(), trips);
-                recyclerView.setAdapter(tripAdapter);
+                    tripAdapter = new TripAdapter(getContext(), trips);
+                    recyclerView.setAdapter(tripAdapter);
 
-                }else{
+                } else {
                     Toast.makeText(getContext(), "Trip details could not be fetched", Toast.LENGTH_LONG).show();
                 }
 
