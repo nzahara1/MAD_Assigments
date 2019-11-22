@@ -1,6 +1,9 @@
 package com.example.hw07a;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +15,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
@@ -45,24 +53,42 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         final Trip trip = tripList.get(position);
         holder.title.setText(trip.getName());
         holder.location.setText(trip.getLat() + "," + trip.getLon());
+        holder.chatName.setText(trip.getChatName());
         if (!trip.getImageUrl().isEmpty()) {
             Picasso.get().load(trip.getImageUrl()).into(holder.imageView);
         }
         //hit db and fetch members
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final DocumentReference docRef = db.collection("chatrooms").document(trip.getChatName());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 members = documentSnapshot.getString("members");
-                if (members.contains(trip.getUserId())) {
+                if (members.contains(LoginActivity.mAuth.getUid())) {
                     holder.joinBtn.setText("Already Joined");
                     holder.joinBtn.setClickable(false);
                     holder.joinBtn.setTextSize(8);
-                } else {
-                    docRef.set(members + trip.getUserId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Unable to fetch chat members", Toast.LENGTH_LONG).show();
+                return;
+            }
+        });
+
+        holder.joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("members", members + "," + LoginActivity.mAuth.getUid());
+                    docRef.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            holder.joinBtn.setText("Already Joined");
+                            holder.joinBtn.setTextSize(8);
+                            holder.joinBtn.setClickable(false);
                             Toast.makeText(context, "Successfully added to the chatroom", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -73,13 +99,59 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                             return;
                         }
                     });
-                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Unable to fetch chat members", Toast.LENGTH_LONG).show();
-                return;
+            public boolean onLongClick(View view) {
+                //check if user is owner .. if not remove from chat
+                if (members.contains(trip.getUserId())) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                    alertDialogBuilder.setMessage("Are you sure of deleting the trip?");
+                            alertDialogBuilder.setPositiveButton("yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                         docRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                             @Override
+                                             public void onComplete(@NonNull Task<Void> task) {
+                                                 db.collection("trips").document(trip.getName()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<Void> task) {
+                                                         Toast.makeText(context, "Trip removed successfully", Toast.LENGTH_LONG).show();
+                                                         return;
+                                                     }
+                                                 });
+                                             }
+                                         });
+                                        }
+                                    }).setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }}).create().show();
+                } else {
+                    members.replace(trip.getUserId(), "");
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("members", members);
+                    docRef.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(context, "Successfully removed from the chat!", Toast.LENGTH_LONG).show();
+                            holder.joinBtn.setText("Join");
+                            holder.joinBtn.setClickable(true);
+                            return;
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Unabl to remove from chat", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    });
+                }
+                return true;
             }
         });
     }
@@ -95,6 +167,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView title;
         TextView location;
         Button joinBtn;
+        TextView chatName;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +175,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             title = itemView.findViewById(R.id.title_val);
             location = itemView.findViewById(R.id.location_val);
             joinBtn = itemView.findViewById(R.id.join_btn);
+            chatName = itemView.findViewById(R.id.chat_val);
         }
     }
 
