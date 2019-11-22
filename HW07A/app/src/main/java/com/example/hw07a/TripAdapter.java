@@ -60,7 +60,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                     holder.joinBtn.setClickable(false);
                     holder.joinBtn.setTextSize(8);
                 } else {
-                    docRef.set(members + trip.getUserId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    docRef.set(members + "," +trip.getUserId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(context, "Successfully added to the chatroom", Toast.LENGTH_SHORT).show();
