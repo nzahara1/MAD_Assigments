@@ -31,6 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +49,6 @@ public class SignUpActivity extends AppCompatActivity {
     String gender;
     static Map<String, StorageReference> map = new HashMap<>();
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    int counter = 0;
     RadioGroup radioGroup;
     Button createBtn;
 
@@ -247,8 +248,9 @@ public class SignUpActivity extends AppCompatActivity {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
+        String randnameuser = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
 
-        final StorageReference imageRepo = storageReference.child("images/camera_" + counter + ".jpg");
+        final StorageReference imageRepo = storageReference.child("images/camera_" + randnameuser + ".jpg");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
