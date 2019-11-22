@@ -41,8 +41,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Trip trip = tripList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final Trip trip = tripList.get(position);
         holder.title.setText(trip.getName());
         holder.location.setText(trip.getLat() + "," + trip.getLon());
         if (!trip.getImageUrl().isEmpty()) {
@@ -50,12 +50,30 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         }
         //hit db and fetch members
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("chatrooms").document(trip.getChatName());
+        final DocumentReference docRef = db.collection("chatrooms").document(trip.getChatName());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 members = documentSnapshot.getString("members");
-
+                if (members.contains(trip.getUserId())) {
+                    holder.joinBtn.setText("Already Joined");
+                    holder.joinBtn.setClickable(false);
+                    holder.joinBtn.setTextSize(8);
+                } else {
+                    docRef.set(members + trip.getUserId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context, "Successfully added to the chatroom", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Unable to add to the chatroom", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    });
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -64,10 +82,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                 return;
             }
         });
-        if (members.contains(trip.getUserId())) {
-            holder.joinBtn.setText("Already Joined");
-            holder.joinBtn.setClickable(false);
-        }
     }
 
     @Override
