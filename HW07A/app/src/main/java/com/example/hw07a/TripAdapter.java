@@ -56,8 +56,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.trip_cover);
-            title = itemView.findViewById(R.id.title_id);
-            location = itemView.findViewById(R.id.location_id);
+            title = itemView.findViewById(R.id.title_val);
+            location = itemView.findViewById(R.id.location_val);
         }
     }
 

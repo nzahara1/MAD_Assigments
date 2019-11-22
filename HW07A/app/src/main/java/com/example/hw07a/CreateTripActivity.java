@@ -39,6 +39,7 @@ public class CreateTripActivity extends AppCompatActivity {
     int GALLERY_REQUEST_CODE = 201;
     ImageView image;
     String trip_image_url;
+    int trip_counter = 900;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -92,7 +93,7 @@ public class CreateTripActivity extends AppCompatActivity {
                     final Trip trip = new Trip(trip_image_url, name.getText().toString(), lat.getText().toString(),
                             lon.getText().toString(), chatName.getText().toString(), user.getUid());
 
-                    db.collection("trips").document(user.getUid()).set(trip).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    db.collection("trips").document(trip.getName()).set(trip).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -134,8 +135,8 @@ public class CreateTripActivity extends AppCompatActivity {
         StorageReference storageReference = firebaseStorage.getReference();
 
 
-        final StorageReference imageRepo = storageReference.child("images/camera_" + SignUpActivity.counter + ".jpg");
-        SignUpActivity.counter += 1;
+        final StorageReference imageRepo = storageReference.child("images/camera_" + trip_counter + ".jpg");
+        trip_counter += 1;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
