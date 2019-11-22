@@ -49,7 +49,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Trip trip = tripList.get(position);
         holder.title.setText(trip.getName());
         holder.location.setText(trip.getLat() + "," + trip.getLon());
@@ -120,6 +120,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                                                      @Override
                                                      public void onComplete(@NonNull Task<Void> task) {
                                                          Toast.makeText(context, "Trip removed successfully", Toast.LENGTH_LONG).show();
+                                                         notifyItemRemoved(position);
                                                          return;
                                                      }
                                                  });

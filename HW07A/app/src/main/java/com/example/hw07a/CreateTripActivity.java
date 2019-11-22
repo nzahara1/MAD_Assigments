@@ -31,15 +31,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+
 
 public class CreateTripActivity extends AppCompatActivity {
 
     int GALLERY_REQUEST_CODE = 201;
     ImageView image;
     String trip_image_url;
-    int trip_counter = 900;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -134,9 +136,9 @@ public class CreateTripActivity extends AppCompatActivity {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
+        String randname = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
 
-        final StorageReference imageRepo = storageReference.child("images/camera_" + trip_counter + ".jpg");
-        trip_counter += 1;
+        final StorageReference imageRepo = storageReference.child("images/camera_" + randname + ".jpg");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
