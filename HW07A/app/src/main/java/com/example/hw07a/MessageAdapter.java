@@ -4,75 +4,72 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageAdapter extends BaseAdapter {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
-
+    public static final int MSG_TYPE_LEFT = 0;
+    public static final int MSG_TYPE_RIGHT = 1;
     List<Message> messages = new ArrayList<Message>();
     Context context;
 
-    public MessageAdapter(Context context) {
+    public MessageAdapter(Context context, List<Message> messages) {
         this.context = context;
+        this.messages = messages;
+        Log.d("messages", messages.toString());
     }
 
-    public void add(Message message) {
-        this.messages.add(message);
-        notifyDataSetChanged(); // to render the list we need to notify
+    @NonNull
+    @Override
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == MSG_TYPE_RIGHT) {
+            View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+            return new MessageAdapter.MessageViewHolder(view);
+        }
+        View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
+        return new MessageAdapter.MessageViewHolder(view);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        Message message = messages.get(position);
+        holder.showMessage.setText(message.getMessage());
+        //set image url
+    }
+
+    @Override
+    public int getItemCount() {
         return messages.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return messages.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        MessageViewHolder holder = new MessageViewHolder();
-        LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        Message message = messages.get(i);
-
-        if (message.isBelongsToCurrentUser()) { // this message was sent by us so let's create a basic chat bubble on the right
-            convertView = messageInflater.inflate(R.layout.my_message, null);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
-            holder.messageBody.setText(message.getText());
-        } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
-            convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.avatar = (View) convertView.findViewById(R.id.avatar);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
-
-            holder.name.setText(message.getMemberData().getName());
-            holder.messageBody.setText(message.getText());
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            drawable.setColor(Color.parseColor(message.getMemberData().getColor()));
-        }
-
-        return convertView;
-    }
-
-    class MessageViewHolder {
+    class MessageViewHolder extends RecyclerView.ViewHolder {
         public View avatar;
-        public TextView name;
+        public TextView showMessage;
         public TextView messageBody;
+
+        public MessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            showMessage = itemView.findViewById(R.id.show_message);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (LoginActivity.mAuth.getUid().equals(messages.get(position).getSender())) {
+            return MSG_TYPE_RIGHT;
+        } else {
+            return MSG_TYPE_LEFT;
+        }
     }
 }

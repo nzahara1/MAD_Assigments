@@ -1,25 +1,40 @@
 package com.example.hw07a;
 
 public class Message {
-    private String text; // message body
-    private MemberData memberData; // data of the user that sent this message
-    private boolean belongsToCurrentUser; // is this message sent by us?
 
-    public Message(String text, MemberData memberData, boolean belongsToCurrentUser) {
-        this.text = text;
-        this.memberData = memberData;
-        this.belongsToCurrentUser = belongsToCurrentUser;
+    public String sender;
+
+    public String receiver;
+
+    public String message;
+
+    public Message(String sender, String receiver, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
     }
 
-    public String getText() {
-        return text;
+    public Message() {
     }
 
-    public MemberData getMemberData() {
-        return memberData;
+    public String getSender() {
+        return sender;
     }
 
-    public boolean isBelongsToCurrentUser() {
-        return belongsToCurrentUser;
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "sender='" + sender + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

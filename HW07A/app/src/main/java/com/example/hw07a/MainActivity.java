@@ -33,36 +33,36 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        editText = (EditText) findViewById(R.id.editText);
-        messagesView = findViewById(R.id.messages_view);
-        messageAdapter = new MessageAdapter(MainActivity.this);
-        messagesView.setAdapter(messageAdapter);
-        MemberData data = new MemberData(getRandomName(), getRandomColor());
-
-        scaledrone = new Scaledrone(channelID, data);
-        scaledrone.connect(new Listener() {
-            @Override
-            public void onOpen() {
-                System.out.println("Scaledrone connection open");
-                // Since the MainActivity itself already implement RoomListener we can pass it as a target
-                scaledrone.subscribe(roomName, MainActivity.this);
-            }
-
-            @Override
-            public void onOpenFailure(Exception ex) {
-                System.err.println(ex);
-            }
-
-            @Override
-            public void onFailure(Exception ex) {
-                System.err.println(ex);
-            }
-
-            @Override
-            public void onClosed(String reason) {
-                System.err.println(reason);
-            }
-        });
+//        editText = (EditText) findViewById(R.id.editText);
+//        messagesView = findViewById(R.id.messages_view);
+//        messageAdapter = new MessageAdapter(MainActivity.this);
+//        messagesView.setAdapter(messageAdapter);
+//        MemberData data = new MemberData(getRandomName(), getRandomColor());
+//
+//        scaledrone = new Scaledrone(channelID, data);
+//        scaledrone.connect(new Listener() {
+//            @Override
+//            public void onOpen() {
+//                System.out.println("Scaledrone connection open");
+//                // Since the MainActivity itself already implement RoomListener we can pass it as a target
+//                scaledrone.subscribe(roomName, MainActivity.this);
+//            }
+//
+//            @Override
+//            public void onOpenFailure(Exception ex) {
+//                System.err.println(ex);
+//            }
+//
+//            @Override
+//            public void onFailure(Exception ex) {
+//                System.err.println(ex);
+//            }
+//
+//            @Override
+//            public void onClosed(String reason) {
+//                System.err.println(reason);
+//            }
+//        });
     }
 
     @Override
@@ -77,26 +77,26 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
     @Override
     public void onMessage(Room room, Message receivedMessage) {
-        final ObjectMapper mapper = new ObjectMapper();
-        try {
-            // member.clientData is a MemberData object, let's parse it as such
-            final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
-            // if the clientID of the message sender is the same as our's it was sent by us
-            boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
-            // since the message body is a simple string in our case we can use json.asText() to parse it as such
-            // if it was instead an object we could use a similar pattern to data parsing
-            final com.example.hw07a.Message message = new com.example.hw07a.Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    messageAdapter.add(message);
-                    // scroll the ListView to the last added element
-                    messagesView.setSelection(messagesView.getCount() - 1);
-                }
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+//        final ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            // member.clientData is a MemberData object, let's parse it as such
+//            final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
+//            // if the clientID of the message sender is the same as our's it was sent by us
+//            boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
+//            // since the message body is a simple string in our case we can use json.asText() to parse it as such
+//            // if it was instead an object we could use a similar pattern to data parsing
+//            final com.example.hw07a.Message message = new com.example.hw07a.Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    messageAdapter.add(message);
+//                    // scroll the ListView to the last added element
+//                    messagesView.setSelection(messagesView.getCount() - 1);
+//                }
+//            });
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

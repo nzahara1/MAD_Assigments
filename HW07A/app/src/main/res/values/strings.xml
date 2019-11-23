@@ -26,4 +26,5 @@
     <string name="joinbtn">Join</string>
     <string name="chatnamer">Chat Name:</string>
     <string name="chatval" />
+    <string name="showmessage" />
 </resources>
