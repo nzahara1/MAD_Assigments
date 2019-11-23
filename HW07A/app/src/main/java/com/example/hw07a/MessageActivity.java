@@ -78,6 +78,8 @@ public class MessageActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     Toast.makeText(MessageActivity.this, "Message sent", Toast.LENGTH_LONG).show();
                     editText.setText("");
+                    readMessage(LoginActivity.mAuth.getUid(), sendUsers, chatRoomname);
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
