@@ -82,7 +82,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                     HashMap<String, String> map = new HashMap<>();
-                    map.put("members", members + "," + LoginActivity.mAuth.getUid());
+                    if(!members.contains(LoginActivity.mAuth.getUid())){
+                        map.put("members", members + "," + LoginActivity.mAuth.getUid());
+                        members = members + "," + LoginActivity.mAuth.getUid();
+                    }else{
+                        map.put("members", members);
+                    }
                     docRef.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -103,12 +108,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         });
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
             @Override
             public boolean onLongClick(View view) {
                 //check if user is owner .. if not remove from chat
-                if (members.contains(trip.getUserId())) {
+
+                if (LoginActivity.mAuth.getUid().contains(trip.getUserId())) {
+                    //Logged in user is the owner of trip
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                    alertDialogBuilder.setMessage("Are you sure of deleting the trip?");
+                    alertDialogBuilder.setMessage("Are you sure of deleting the trip for everyone?");
                             alertDialogBuilder.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -124,6 +132,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                                                          return;
                                                      }
                                                  });
+                                                 db.collection("chatrooms").document(trip.getChatName()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<Void> task) {
+                                                         Toast.makeText(context, "Trip's chatroom removed successfully", Toast.LENGTH_LONG).show();
+                                                         return;
+                                                     }
+                                                 });
                                              }
                                          });
                                         }
@@ -133,24 +148,44 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                             return;
                         }}).create().show();
                 } else {
-                    members.replace(trip.getUserId(), "");
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("members", members);
-                    docRef.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(context, "Successfully removed from the chat!", Toast.LENGTH_LONG).show();
-                            holder.joinBtn.setText("Join");
-                            holder.joinBtn.setClickable(true);
-                            return;
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Unable to remove from chat", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                    });
+                    if (members.contains(LoginActivity.mAuth.getUid())){
+                        //not the owner, check if he is a member
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                        alertDialogBuilder.setMessage("Are you sure of removing this trip from your account?");
+                        alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                members = members.replace(LoginActivity.mAuth.getUid(), "");
+                                HashMap<String, String> map = new HashMap<>();
+                                map.put("members", members);
+                                docRef.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(context, "Successfully removed from the chat!", Toast.LENGTH_LONG).show();
+                                        holder.joinBtn.setText("Join");
+                                        holder.joinBtn.setClickable(true);
+                                        return;
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "Unable to remove from chat", Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                });
+
+                            }
+                        }).setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }}).create().show();
+
+                    }else{
+                        Toast.makeText(context, "Not a member of the chat to remove", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return true;
             }
