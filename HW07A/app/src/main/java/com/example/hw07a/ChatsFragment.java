@@ -35,6 +35,7 @@ public class ChatsFragment extends Fragment {
     String members;
     Map<String, String> chatRooms;
     ArrayList<String> chatNames;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +48,7 @@ public class ChatsFragment extends Fragment {
                 String chat = chatNames.get(i);
                 Intent intent = new Intent(getContext(), MessageActivity.class);
                 intent.putExtra("send_users", chatRooms.get(chat));
+                intent.putExtra("chatroomname", chat);
                 startActivity(intent);
             }
         });
@@ -68,8 +70,9 @@ public class ChatsFragment extends Fragment {
                         }
                     }
                     chatNames = new ArrayList<String>(chatRooms.keySet());
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, chatNames);
+                    arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, chatNames);
                     listView.setAdapter(arrayAdapter);
+
 
                 } else {
                     Toast.makeText(getContext(), "Trip details could not be fetched", Toast.LENGTH_LONG).show();
