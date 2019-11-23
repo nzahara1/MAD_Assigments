@@ -47,6 +47,7 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             sendUsers = intent.getStringExtra("send_users");
+            sendUsers = sendUsers.replace(LoginActivity.mAuth.getUid(), "");
             readMessage(LoginActivity.mAuth.getUid(), sendUsers);
         }
 
@@ -89,8 +90,8 @@ public class MessageActivity extends AppCompatActivity {
                     messages.clear();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Message message = new Message(documentSnapshot.get("sender").toString(), documentSnapshot.get("reciever").toString(), documentSnapshot.get("message").toString());
-                        if (message.getReceiver().equals(myId) && message.getSender().equals(userId) ||
-                                message.getReceiver().equals(userId) && message.getSender().equals(myId)) {
+                        if (message.getReceiver().contains(myId) && userId.contains(message.getSender()) ||
+                                message.getReceiver().contains(userId) && message.getSender().contains(myId)) {
                             messages.add(message);
                         }
                     }
