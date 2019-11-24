@@ -1,7 +1,9 @@
 package com.example.hw07a;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
@@ -10,9 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +54,64 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Message message = messages.get(position);
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, final int position) {
+        final Message message = messages.get(position);
         holder.showMessage.setText(message.getMessage());
+        holder.showMessage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                if(message.getSender().equals(LoginActivity.mAuth.getUid())) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Delete message");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //messages.remove(i);
+                            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if(document.getString("message").equals(message.getMessage())) {
+                                                String delete_chat_id = document.getId();
+                                                db.collection("chats").document(delete_chat_id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d("demo", "DocumentSnapshot successfully deleted!");
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    } else {
+                                        Log.d("demo", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                            messages.remove(position);
+                            notifyDataSetChanged();
+                            return;
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            return;
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }else{
+                    Toast.makeText(context, "Cannot delete other user's messages", Toast.LENGTH_LONG).show();
+                }
+
+
+                return false;
+            }
+        });
         //set image url
     }
 
