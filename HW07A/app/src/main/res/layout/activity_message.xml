@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,7 @@
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
@@ -31,6 +32,13 @@
             android:inputType="text"
             android:paddingHorizontal="10dp"
             android:text="" />
+
+        <ImageView
+            android:id="@+id/photo_add_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="2"
+            app:srcCompat="@drawable/attachment" />
 
         <ImageButton
             android:id="@+id/img_btn"
@@ -42,5 +50,6 @@
             android:onClick="sendMessage"
             android:padding="20dp"
             android:scaleType="fitCenter" />
+
     </LinearLayout>
 </LinearLayout>

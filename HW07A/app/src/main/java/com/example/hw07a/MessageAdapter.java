@@ -5,7 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +41,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
+
     List<Message> messages = new ArrayList<Message>();
     Context context;
 
@@ -49,14 +58,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
             return new MessageAdapter.MessageViewHolder(view);
         }
-        View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
-        return new MessageAdapter.MessageViewHolder(view);
+            View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
+            return new MessageAdapter.MessageViewHolder(view);
+
+
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, final int position) {
         final Message message = messages.get(position);
+//        if(message.getMessage().contains("https")){
+//            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(hol);
+//        }else{
+//            holder.showMessage.setText(message.getMessage());
+//        }
+
         holder.showMessage.setText(message.getMessage());
+
         holder.showMessage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
