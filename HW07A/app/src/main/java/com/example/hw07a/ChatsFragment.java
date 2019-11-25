@@ -57,6 +57,11 @@ public class ChatsFragment extends Fragment {
         return view;
     }
 
+    public void refresh(){
+        chatRooms = new HashMap<>();
+        getChatRooms();
+    }
+
     private void getChatRooms() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("chatrooms").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

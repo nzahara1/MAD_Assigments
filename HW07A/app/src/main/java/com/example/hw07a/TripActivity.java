@@ -97,11 +97,29 @@ public class TripActivity extends AppCompatActivity {
                     startActivityForResult(intent1, PROFILE_UPDATE);
                 }
             });
-            ViewPageradapter viewPageradapter = new ViewPageradapter(getSupportFragmentManager());
+            final ViewPageradapter viewPageradapter = new ViewPageradapter(getSupportFragmentManager());
             viewPageradapter.addFragment(new ChatsFragment(), "Chats");
             viewPageradapter.addFragment(new TripFragment(), "Trips");
 
             viewPager.setAdapter(viewPageradapter);
+            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    switch (position){
+                        case 0 : ((ChatsFragment)viewPageradapter.getItem(position)).refresh();
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
             tabLayout.setupWithViewPager(viewPager);
         }
     }
