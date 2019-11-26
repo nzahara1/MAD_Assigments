@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTripActivity">
+
+    <EditText
+        android:id="@+id/trip_add_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="91dp"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:hint="Enter Trip Name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/trip_add_city"
+        android:layout_width="145dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="34dp"
+        android:ems="10"
+        android:hint="Serach for a city"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trip_add_name" />
+
+    <Button
+        android:id="@+id/trip_search_btn"
+        android:layout_width="94dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="28dp"
+        android:hint="Search for a city"
+        android:text="@string/tripserachbtn"
+        app:layout_constraintStart_toEndOf="@+id/trip_add_city"
+        app:layout_constraintTop_toBottomOf="@+id/trip_add_name" />
+
+    <Button
+        android:id="@+id/add_trip_btn"
+        android:layout_width="135dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="242dp"
+        android:text="@string/addtripbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trip_search_btn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
