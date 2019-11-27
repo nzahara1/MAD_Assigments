@@ -1,5 +1,6 @@
 package com.example.hw07a;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message {
@@ -51,5 +52,17 @@ public class Message {
                 ", receiver='" + receiver + '\'' +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    public Date getDateTime(){
+        Date date1 = new Date();
+        SimpleDateFormat formatter5=new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+        try{
+            date1=formatter5.parse(this.sendtime);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
+        return date1;
     }
 }

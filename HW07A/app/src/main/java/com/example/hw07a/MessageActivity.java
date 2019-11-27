@@ -36,6 +36,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -134,7 +135,7 @@ public class MessageActivity extends AppCompatActivity {
     private void readMessage(final String myId, final String userId, final String chatRoomname) {
         messages = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("chats").orderBy("sendtime", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -147,6 +148,12 @@ public class MessageActivity extends AppCompatActivity {
                         }
                     }
                     Log.d("messages", messages.toString());
+                    Collections.sort(messages, new Comparator<Message>() {
+                        public int compare(Message o1, Message o2) {
+                            return o1.getDateTime().compareTo(o2.getDateTime());
+                        }
+                    });
+
                     messageAdapter = new MessageAdapter(MessageActivity.this, messages);
                     recyclerView.setAdapter(messageAdapter);
 
