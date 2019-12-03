@@ -75,6 +75,9 @@ public class MessageActivity extends AppCompatActivity {
             while(sendUsers.startsWith(",")){
                 sendUsers = sendUsers.substring(1);
             }
+            while(sendUsers.endsWith(",")){
+                sendUsers = sendUsers.substring(0, sendUsers.length()-1);
+            }
             readMessage(LoginActivity.mAuth.getUid(), sendUsers, chatRoomname);
         }
 

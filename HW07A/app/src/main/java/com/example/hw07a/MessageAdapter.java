@@ -71,7 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, final int position) {
         final Message message = messages.get(position);
         if(message.getMessage().contains("https")){
             holder.imagetext.setVisibility(View.VISIBLE);
@@ -168,7 +168,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             });
         }else{
             holder.timetext.setText(message.getDateTime().toString());
-            if(message.getSender().equals(LoginActivity.mAuth.getUid())){
+            if(message.getSender().contains(LoginActivity.mAuth.getUid())){
                 holder.showMessage.setText(message.getMessage());
             }else{
                 final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -179,9 +179,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d("demosow", "DocumentSnapshot data: " + document.getData());
-                                Log.d("demosow", document.get("firstName").toString());
                                 sendername = document.get("firstName").toString();
+                                Log.d("demosow", sendername + "---");
+                                holder.showMessage.setText( sendername+ ":  " + message.getMessage());
 
                             } else {
                                 Log.d("demo", "No such document");
@@ -192,7 +192,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     }
                 });
 
-                holder.showMessage.setText( sendername+ ":  " + message.getMessage());
+
             }
 
             holder.imagetext.setVisibility(View.INVISIBLE);
