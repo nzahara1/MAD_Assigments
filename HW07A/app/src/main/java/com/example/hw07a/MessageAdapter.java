@@ -79,6 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.imagetext.setClickable(true);
             holder.imagetext.setMaxHeight(80);
             holder.imagetext.setMaxWidth(80);
+            holder.timetext.setText(message.getDateTime().toString());
             Picasso.get().load(message.getMessage()).into(holder.imagetext);
             holder.imagetext.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -166,6 +167,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
         }else{
+            holder.timetext.setText(message.getDateTime().toString());
             if(message.getSender().equals(LoginActivity.mAuth.getUid())){
                 holder.showMessage.setText(message.getMessage());
             }else{
@@ -268,6 +270,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public TextView showMessage;
         public TextView messageBody;
         public ImageView imagetext;
+        public TextView timetext;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -277,6 +280,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             params.width = 400;
             params.height = 400;
             imagetext.setLayoutParams(params);
+            timetext = itemView.findViewById(R.id.timetext);
         }
     }
 

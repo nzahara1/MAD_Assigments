@@ -45,9 +45,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="21dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="55dp"
             android:layout_marginEnd="10dp"
             android:visibility="invisible"
             app:srcCompat="@android:drawable/screen_background_light" />
+
+        <TextView
+            android:id="@+id/timetext"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="80dp"
+            android:text="TextView"
+            android:textSize="7sp" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
