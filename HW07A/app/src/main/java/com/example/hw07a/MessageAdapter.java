@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
+    String sendername;
 
     List<Message> messages = new ArrayList<Message>();
     Context context;
@@ -164,7 +166,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
         }else{
-            holder.showMessage.setText(message.getMessage());
+            if(message.getSender().equals(LoginActivity.mAuth.getUid())){
+                holder.showMessage.setText(message.getMessage());
+            }else{
+                final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference docRef = db.collection("users").document(message.getSender());
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("demosow", "DocumentSnapshot data: " + document.getData());
+                                Log.d("demosow", document.get("firstName").toString());
+                                sendername = document.get("firstName").toString();
+
+                            } else {
+                                Log.d("demo", "No such document");
+                            }
+                        } else {
+                            Log.d("demo", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+                holder.showMessage.setText( sendername+ ":  " + message.getMessage());
+            }
+
             holder.imagetext.setVisibility(View.INVISIBLE);
             holder.showMessage.setVisibility(View.VISIBLE);
             holder.imagetext.setClickable(false);
